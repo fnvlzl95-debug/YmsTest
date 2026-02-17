@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+client/build/
+server/bin/
+server/obj/
+
+# SQLite DB files
+server/*.db
+server/*.db-shm
+server/*.db-wal
+
+# IDE
+.vs/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Env
+.env
+.env.local

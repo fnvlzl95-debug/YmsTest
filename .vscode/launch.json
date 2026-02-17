@@ -1,0 +1,36 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "YMS Server (.NET)",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/server/YMS.Server.csproj"
+    },
+    {
+      "name": "YMS Client (npm start)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm start",
+      "cwd": "${workspaceFolder}/client"
+    },
+    {
+      "name": "YMS Chrome",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/client"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "YMS Full Stack",
+      "configurations": [
+        "YMS Server (.NET)",
+        "YMS Client (npm start)",
+        "YMS Chrome"
+      ],
+      "stopAll": true
+    }
+  ]
+}

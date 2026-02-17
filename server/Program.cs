@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IOpenLabMailer, Mailer>();
 
 var envProvider = Environment.GetEnvironmentVariable("DB_PROVIDER");
 var configProvider = builder.Configuration["Database:Provider"];
@@ -62,8 +63,15 @@ app.UseCors("AllowClient");
 app.UseAuthorization();
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+var disableSeedFromConfig = builder.Configuration.GetValue<bool>("Database:DisableSeed");
+var disableSeedFromEnv = string.Equals(
+    Environment.GetEnvironmentVariable("DISABLE_SEED"),
+    "true",
+    StringComparison.OrdinalIgnoreCase);
+
+if (!disableSeedFromConfig && !disableSeedFromEnv)
 {
+    using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     await SeedData.InitializeAsync(dbContext);
 }

@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(netstat:*)"
+      "Bash(netstat:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

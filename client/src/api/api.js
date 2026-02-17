@@ -37,6 +37,7 @@ const buildParams = (filters = {}) => {
   return params
 }
 
+// Legacy endpoints
 export const getEquipments = async (filters = {}) => {
   const response = await apiClient.get('/equipments', { params: buildParams(filters) })
   return response.data
@@ -109,6 +110,63 @@ export const setRequestNotification = async (payload) => {
 
 export const saveSearchHistory = async (payload) => {
   await apiClient.post('/ui-audit/search-history', payload)
+}
+
+// P00090-like endpoints
+export const getMainLookups = async (filters = {}) => {
+  const response = await apiClient.get('/main/lookups', { params: buildParams(filters) })
+  return response.data
+}
+
+export const getOpenLabReservations = async (filters = {}) => {
+  const response = await apiClient.get('/main/openlab-resv', { params: buildParams(filters) })
+  return response.data
+}
+
+export const getOpenLabReservationById = async (id) => {
+  const response = await apiClient.get(`/main/openlab-resv/${id}`)
+  return response.data
+}
+
+export const createOpenLabReservation = async (payload) => {
+  const response = await apiClient.post('/main/openlab-resv', payload)
+  return response.data
+}
+
+export const updateOpenLabReservation = async (id, payload) => {
+  const response = await apiClient.put(`/main/openlab-resv/${id}`, payload)
+  return response.data
+}
+
+export const deleteOpenLabReservation = async (id) => {
+  await apiClient.delete(`/main/openlab-resv/${id}`)
+}
+
+export const getOpenLabEquipments = async (filters = {}) => {
+  const response = await apiClient.get('/main/openlab-eqp', { params: buildParams(filters) })
+  return response.data
+}
+
+export const getOpenLabAuths = async (filters = {}) => {
+  const response = await apiClient.get('/main/openlab-auth', { params: buildParams(filters) })
+  return response.data
+}
+
+export const createOpenLabAuth = async (payload) => {
+  const response = await apiClient.post('/main/openlab-auth', payload)
+  return response.data
+}
+
+export const deleteOpenLabAuth = async (id) => {
+  await apiClient.delete(`/main/openlab-auth/${id}`)
+}
+
+export const getOpenLabReceivers = async (issueNo, approvalSeq = '0') => {
+  const response = await apiClient.get('/main/openlab-receivers', {
+    params: buildParams({ issueNo, approvalSeq }),
+  })
+
+  return response.data
 }
 
 export default apiClient

@@ -11,6 +11,19 @@
 - `npm run dev:oracle`
 - Requires Oracle Listener running (`localhost:1521/XEPDB1`)
 
+## P00090-Style Structure
+- Client (`client/src`)
+  - `Main.jsx`
+  - `Enums.js`
+  - `OpenLapResv.jsx`
+  - `OpenLapResvEdit.jsx`
+  - `OpenLapEqp.jsx`
+  - `OpenLapAuth.jsx`
+- Server (`server`)
+  - `Main.cs`
+  - `Enums.cs`
+  - `Mailer.cs`
+
 ## Build Check
 - `dotnet build server/YMS.Server.csproj`
 - `npm --prefix client run lint`

@@ -85,12 +85,129 @@ body {
   border-bottom-color: var(--primary-color);
 }
 
+.page-tab-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border-bottom: 1px solid var(--border-color);
+  padding: 8px 12px;
+}
+
+.page-tab {
+  border: 1px solid var(--border-color);
+  background: #f7fafc;
+  color: #374151;
+  padding: 6px 12px;
+  font-size: 12px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.page-tab.active {
+  border-color: var(--primary-color);
+  color: #0f4b8a;
+  background: #e8f3ff;
+}
+
+.main-body {
+  flex: 1;
+  min-height: 0;
+}
+
+.openlap-resv-wrap {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.openlap-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-color);
+  background: #fff;
+}
+
 .content-grid {
   display: grid;
   grid-template-columns: 220px 1fr;
   gap: 0;
   flex: 1;
   min-height: 0;
+}
+
+.management-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 12px;
+}
+
+.panel-card {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.panel-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.inline-form {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.inline-form select,
+.inline-form input {
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  padding: 6px 8px;
+  font-size: 12px;
+  min-width: 140px;
+}
+
+.simple-table-wrap {
+  overflow: auto;
+  max-height: 360px;
+}
+
+.simple-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.simple-table th,
+.simple-table td {
+  border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  padding: 6px 8px;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.simple-table th {
+  background: #f9fafb;
+  font-weight: 600;
+}
+
+.simple-table th:last-child,
+.simple-table td:last-child {
+  border-right: 0;
 }
 
 .filter-sidebar {
@@ -316,6 +433,14 @@ body {
   background: #fde8e8;
   color: #b91c1c;
   border-bottom: 1px solid #efc1c1;
+  padding: 7px 12px;
+  font-size: 12px;
+}
+
+.info-banner {
+  background: #e8f3ff;
+  color: #1e40af;
+  border-bottom: 1px solid #c5dcff;
   padding: 7px 12px;
   font-size: 12px;
 }

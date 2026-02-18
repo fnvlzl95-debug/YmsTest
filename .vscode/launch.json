@@ -2,32 +2,74 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "YMS Server (.NET)",
-      "type": "dotnet",
+      "name": "YMS Server (.NET + Sqlite)",
+      "type": "coreclr",
       "request": "launch",
-      "projectPath": "${workspaceFolder}/server/YMS.Server.csproj"
+      "program": "${workspaceFolder}/server/bin/Debug/net10.0/YMS.Server.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/server",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5000",
+        "DB_PROVIDER": "Sqlite",
+        "DISABLE_SEED": "false"
+      },
+      "console": "integratedTerminal",
+      "preLaunchTask": "build-server"
     },
     {
-      "name": "YMS Client (npm start)",
+      "name": "YMS Server (.NET + Oracle)",
+      "type": "coreclr",
+      "request": "launch",
+      "program": "${workspaceFolder}/server/bin/Debug/net10.0/YMS.Server.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/server",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5000",
+        "DB_PROVIDER": "Oracle",
+        "DISABLE_SEED": "true"
+      },
+      "console": "integratedTerminal",
+      "preLaunchTask": "build-server"
+    },
+    {
+      "name": "Attach .NET (실행중인 서버에 붙기)",
+      "type": "coreclr",
+      "request": "attach",
+      "processId": "${command:pickProcess}"
+    },
+    {
+      "name": "YMS Client (Vite)",
       "type": "node-terminal",
       "request": "launch",
-      "command": "npm start",
+      "command": "npm run dev",
       "cwd": "${workspaceFolder}/client"
     },
     {
       "name": "YMS Chrome",
-      "type": "pwa-chrome",
+      "type": "chrome",
       "request": "launch",
       "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}/client"
+      "webRoot": "${workspaceFolder}/client/src",
+      "sourceMaps": true
     }
   ],
   "compounds": [
     {
-      "name": "YMS Full Stack",
+      "name": "YMS Full Stack (Sqlite)",
       "configurations": [
-        "YMS Server (.NET)",
-        "YMS Client (npm start)",
+        "YMS Server (.NET + Sqlite)",
+        "YMS Client (Vite)",
+        "YMS Chrome"
+      ],
+      "stopAll": true
+    },
+    {
+      "name": "YMS Full Stack (Oracle)",
+      "configurations": [
+        "YMS Server (.NET + Oracle)",
+        "YMS Client (Vite)",
         "YMS Chrome"
       ],
       "stopAll": true

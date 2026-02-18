@@ -10,6 +10,7 @@ function ReceptionEdit({
   onToggleLine,
   onToggleClass,
   onResetFilters,
+  onSearch,
   purposeTabs,
   selectedPurpose,
   onSelectPurpose,
@@ -37,6 +38,7 @@ function ReceptionEdit({
           onToggleLine={onToggleLine}
           onToggleClass={onToggleClass}
           onReset={onResetFilters}
+          onSearch={onSearch}
         />
 
         <section className="grid-panel">

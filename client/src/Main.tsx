@@ -29,6 +29,12 @@ const toggleSelection = (items, value) => {
   return [...items, value]
 }
 
+const sleep = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms)
+  })
+}
+
 function Main() {
   const [activePageTab, setActivePageTab] = useState(PAGE_TABS[0].id)
   const [bizSite, setBizSite] = useState(BIZ_SITES[0].id)
@@ -153,8 +159,25 @@ function Main() {
       setFiltersReady(false)
 
       try {
-        const response = await getMainLookups({ site: bizSite })
-        if (disposed) {
+        let response = null
+
+        for (let attempt = 0; attempt < 8; attempt += 1) {
+          try {
+            response = await getMainLookups({ site: bizSite })
+            break
+          } catch (error) {
+            const isNetworkError = !error?.response
+            const canRetry = isNetworkError && attempt < 7 && !disposed
+
+            if (!canRetry) {
+              throw error
+            }
+
+            await sleep(800)
+          }
+        }
+
+        if (!response || disposed) {
           return
         }
 
@@ -176,12 +199,9 @@ function Main() {
         })
 
         setFiltersReady(true)
-
-        await Promise.all([
-          loadEquipmentRows(nextFilters),
-          loadAuthRows(),
-        ])
-
+        setReservationRows([])
+        setEquipmentRows([])
+        setAuthRows([])
         setErrorMessage('')
       } catch (error) {
         setErrorMessage(error?.response?.data ?? '초기 데이터 로딩에 실패했습니다.')
@@ -197,37 +217,36 @@ function Main() {
     }
   }, [bizSite, loadAuthRows, loadEquipmentRows])
 
-  useEffect(() => {
+  const handleSearch = useCallback(async () => {
     if (!filtersReady) {
       return
     }
 
-    loadReservationRows(resvFilters)
-    loadEquipmentRows(resvFilters)
-  }, [filtersReady, resvFilters, loadReservationRows, loadEquipmentRows])
+    await Promise.all([
+      loadReservationRows(resvFilters),
+      loadEquipmentRows(resvFilters),
+      loadAuthRows(),
+    ])
 
-  useEffect(() => {
-    if (!filtersReady || !currentUser?.userId) {
-      return
+    if (currentUser?.userId) {
+      const searchValue = JSON.stringify({
+        pageTab: activePageTab,
+        site: bizSite,
+        lineFilters: resvFilters.lines,
+        classFilters: resvFilters.classes,
+        purpose: resvFilters.purpose,
+      })
+
+      saveSearchHistory({
+        appId: 'P00090',
+        controlId: 'MAIN_FILTER',
+        userId: currentUser.userId,
+        searchValue,
+      }).catch(() => {
+        // Search history should not block the UI.
+      })
     }
-
-    const searchValue = JSON.stringify({
-      pageTab: activePageTab,
-      site: bizSite,
-      lineFilters: resvFilters.lines,
-      classFilters: resvFilters.classes,
-      purpose: resvFilters.purpose,
-    })
-
-    saveSearchHistory({
-      appId: 'P00090',
-      controlId: 'MAIN_FILTER',
-      userId: currentUser.userId,
-      searchValue,
-    }).catch(() => {
-      // Search history should not block the UI.
-    })
-  }, [filtersReady, activePageTab, bizSite, resvFilters, currentUser])
+  }, [filtersReady, resvFilters, activePageTab, bizSite, currentUser, loadReservationRows, loadEquipmentRows, loadAuthRows])
 
   const openCreateDrawer = () => {
     setDrawerMode('create')
@@ -433,6 +452,7 @@ function Main() {
                 classes: toggleSelection(prev.classes, value),
               }))
             }}
+            onSearch={handleSearch}
             onResetFilters={() => {
               setResvFilters({
                 lines: lookups.lines,

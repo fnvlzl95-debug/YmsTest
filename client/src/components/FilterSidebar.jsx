@@ -24,6 +24,7 @@ function FilterSidebar({
   onToggleLine,
   onToggleClass,
   onReset,
+  onSearch,
 }) {
   return (
     <aside className="filter-sidebar">
@@ -41,9 +42,14 @@ function FilterSidebar({
         onToggle={onToggleClass}
       />
 
-      <button className="btn btn-outline return-btn" onClick={onReset}>
-        리턴
-      </button>
+      <div className="filter-actions">
+        <button className="btn btn-primary search-btn" onClick={onSearch}>
+          조회
+        </button>
+        <button className="btn btn-outline return-btn" onClick={onReset}>
+          리턴
+        </button>
+      </div>
     </aside>
   )
 }

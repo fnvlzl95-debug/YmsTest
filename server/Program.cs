@@ -8,10 +8,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IOpenLabMailer, Mailer>();
+builder.Services.AddScoped<DataAgent>();
 
 var envProvider = Environment.GetEnvironmentVariable("DB_PROVIDER");
 var configProvider = builder.Configuration["Database:Provider"];
-var dbProvider = string.IsNullOrWhiteSpace(envProvider) ? configProvider : envProvider;
+var dbProvider = string.IsNullOrWhiteSpace(envProvider)
+    ? (builder.Environment.IsDevelopment() ? "Sqlite" : configProvider)
+    : envProvider;
 dbProvider ??= "Sqlite";
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -68,12 +71,20 @@ var disableSeedFromEnv = string.Equals(
     Environment.GetEnvironmentVariable("DISABLE_SEED"),
     "true",
     StringComparison.OrdinalIgnoreCase);
+var useOracle = dbProvider.Equals("Oracle", StringComparison.OrdinalIgnoreCase);
 
-if (!disableSeedFromConfig && !disableSeedFromEnv)
+using (var scope = app.Services.CreateScope())
 {
-    using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    await SeedData.InitializeAsync(dbContext);
+
+    if (!disableSeedFromConfig && !disableSeedFromEnv)
+    {
+        await SeedData.InitializeAsync(dbContext);
+    }
+    else if (!useOracle)
+    {
+        await dbContext.Database.EnsureCreatedAsync();
+    }
 }
 
 app.Run();

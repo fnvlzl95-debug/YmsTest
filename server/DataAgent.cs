@@ -34,7 +34,9 @@ public class DataAgent
             command.Parameters.Add(dbParam);
         }
 
+        var dataSet = new DataSet { EnforceConstraints = false };
         var dataTable = new DataTable();
+        dataSet.Tables.Add(dataTable);
         using var reader = await command.ExecuteReaderAsync();
         dataTable.Load(reader);
 

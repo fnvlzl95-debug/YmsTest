@@ -445,6 +445,129 @@ body {
   font-size: 12px;
 }
 
+/* ──────────────────────────────────────────────
+ * ExpandPanel — 실무 공용 접기/펼치기 패널
+ * ────────────────────────────────────────────── */
+.expand-panel {
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.expand-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #f5f7fa;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  user-select: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.expand-panel-header:hover {
+  background: #edf0f5;
+}
+
+.expand-panel-arrow {
+  font-size: 10px;
+  color: #6b7280;
+}
+
+.expand-panel.collapsed .expand-panel-header {
+  border-bottom: 0;
+}
+
+.expand-panel-body {
+  padding: 10px 12px;
+}
+
+/* ──────────────────────────────────────────────
+ * ConditionInput — 실무 공용 Input 컴포넌트
+ * ────────────────────────────────────────────── */
+.condition-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.condition-input {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  min-width: 150px;
+}
+
+.condition-label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.condition-input input,
+.condition-input select {
+  border: 1px solid var(--border-color);
+  border-radius: 2px;
+  padding: 5px 8px;
+  font-size: 12px;
+  min-width: 140px;
+}
+
+.condition-input select:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+/* Employee search dropdown */
+.employee-search-wrap {
+  position: relative;
+}
+
+.employee-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid var(--border-color);
+  border-top: 0;
+  max-height: 160px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.employee-dropdown li {
+  padding: 6px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.employee-dropdown li:hover {
+  background: var(--row-hover-bg);
+}
+
+.employee-loading {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+/* Condition panel in ReceptionEdit */
+.condition-panel-area {
+  padding: 0 12px 8px;
+  background: #fff;
+  border-bottom: 1px solid var(--border-color);
+}
+
 @media (max-width: 980px) {
   .content-grid {
     grid-template-columns: 1fr;
